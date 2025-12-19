@@ -3,10 +3,12 @@ import requests
 import time
 import random
 from . import indexer
+from . import page_graph
 
 def crawler_bot(starter_url: str):
     urls = [starter_url]
     visited_urls = set()
+    outlinks_formated=[]
 
     headers = {
         "User-Agent": "MySimpleCrawler/1.0 (learning project)"
@@ -49,7 +51,15 @@ def crawler_bot(starter_url: str):
                 continue
             url = url.split("#")[0]
 
+            # add to outlinks
+            outlinks_formated.append(url)
+
             # Check if url has not been visited before
             if url not in visited_urls:
                 urls.append(url)
                 visited_urls.add(url)
+
+        
+        # save the pages outlinks 
+        page_graph.graph_add(current_url, outlinks_formated)
+        outlinks_formated.clear()
