@@ -1,5 +1,5 @@
 import re
-from database_helper import insert_singel_item
+from database_helper import insert_singel_page
 
 def indexer(webpage, webpage_url):
     # get the title of the page
@@ -30,7 +30,7 @@ def indexer(webpage, webpage_url):
     }
 
     try:
-        insert_singel_item(indexed_page)
+        insert_singel_page(indexed_page)
     except Exception as ex:
         print(f"Couldnt save indexed page: {ex}")
     
