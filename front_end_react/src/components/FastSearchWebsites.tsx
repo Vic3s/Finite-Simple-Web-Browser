@@ -1,0 +1,1 @@
+// Add the option to add fast search websites later under the other search options
