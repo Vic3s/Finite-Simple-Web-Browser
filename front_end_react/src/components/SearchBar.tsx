@@ -1,34 +1,38 @@
-import { useState, useEffect } from "react"
-import search_bar_icon from "../../public/search-outline-svgrepo-com.svg"
-
+import { useState } from "react"
+import { useNavigate } from "react-router"
+import axios from "axios"
+import search_bar_icon from "../../public/magnifying-glass-svgrepo-com.svg"
+import "../styling/search_bar.css"
 
 export const SearchBar = () => {
 
     const[searchString, setSearchString] = useState("");
 
+    const navigate = useNavigate()
 
     const submitSearch = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
-        const response = await fetch("http://127.0.0.1/search", {
-            method: 'POST',
-            body: JSON.stringify({
-                'searchString': searchString 
-            })
-        })
-        .then(response => { return response })
-        .catch(err => console.log(err))
 
-        console.log(response)
+        const result = axios.post("/search", { "searchString": searchString })
+        .then((result) => {
+            return result.data
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        
+        navigate("/search-result", {
+            state: result
+        })
     }
 
     return (<>
-    
-        <form style={{"minWidth": "43vw"}} onSubmit={submitSearch} >
+        <form style={{"minWidth": "43vw", "borderRadius": "100px"}} onSubmit={submitSearch} >
             <div className="input-group">
                 <input
                 type="search"
                 className="form-control fs-5"
-                placeholder="Search"
+                placeholder="Every second counts..."
                 aria-label="Search"
                 style={{"borderTopLeftRadius": "100px", "borderBottomLeftRadius": "100px", "minHeight":"60px", "paddingLeft": "30px"}}
                 onChange={e => setSearchString(e.target.value)}
@@ -42,6 +46,5 @@ export const SearchBar = () => {
                 </button>
             </div>
         </form>
-
     </>)
 }

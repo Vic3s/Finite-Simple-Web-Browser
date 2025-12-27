@@ -1,0 +1,18 @@
+.search-result-container{
+    width: 100vw;
+    height: 100vh;
+}
+
+.main-content-result{
+    width: 100vw;
+    height: 95vh;
+    margin: auto;
+}
+
+.results-list-container {
+    background-color: white;
+}
+
+.results{
+    max-width: 65%;
+}
