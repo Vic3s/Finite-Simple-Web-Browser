@@ -1,7 +1,8 @@
 import re
-from database_helper import insert_singel_page
+from database_helper import insert_singel_page, get_all_inverted_indexes, bulk_write_inverted_indexes
+from pymongo import UpdateOne, InsertOne
 
-def indexer(webpage, webpage_url):
+def index(webpage, webpage_url):
     # get the title of the page
     title_tag = webpage.find("title")
     title = title_tag.get_text(strip=True) if title_tag else "Missing Title"
@@ -18,10 +19,33 @@ def indexer(webpage, webpage_url):
     # get the word content of the page
     words = re.findall(r"\b\w+\b", webpage.get_text(separator=" ", strip=True).lower())
 
-    # Double check and wfilter out any numbers and charachters
+    # double check and filter out any numbers and charachters and remove duplicate 
+    words = (word for word in words if word.isalpha())
+
+    # save inverted indexes for page content
+    all_existing_words_list = get_all_inverted_indexes().keys()
+    operations = []
+
+    for word in words:
+        if word in all_existing_words_list:
+            operations.append(
+                UpdateOne(
+                    {"word": word},
+                    {"$addToSet": {"word_pages": webpage_url}}
+                )
+            )
+            
+        else:
+            operations.append(
+                InsertOne({
+                    "word": word,
+                    "word_pages": [webpage_url]
+                })
+            )
     
-    words = [word for word in words if word.isalpha()]
+    bulk_write_inverted_indexes(operations)
     
+    # save page content 
     indexed_page = {
         "url": webpage_url,
         "title": title,

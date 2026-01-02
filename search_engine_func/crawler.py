@@ -31,7 +31,7 @@ def crawler_bot(starter_url: str):
         webpage = BeautifulSoup(response.content, "html.parser")
 
         # give the page content to the indexer 
-        indexer.indexer(webpage, current_url)
+        indexer.index(webpage, current_url)
 
         # get the hyperlinks from the html text
         hyperlinks = webpage.select("a[href]")

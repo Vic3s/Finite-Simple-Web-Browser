@@ -1,14 +1,12 @@
 from app import app
 from flask import request, jsonify
-from flask_cors import CORS
+from search_engine_func.search_by_words import search_wordlist
 
-CORS(app)
-
-@app.route("/search")
+@app.route("/search", methods=["POST"])
 def search():
-    print(request.form)
+    wordslist = request.json["searchString"].split()
 
-    return jsonify({
-        "message": "Search successfull",
-        "status": 200
-    })
+    search_result_list = search_wordlist(wordslist)
+    
+
+    return jsonify(search_result_list)

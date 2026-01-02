@@ -13,17 +13,17 @@ export const SearchBar = () => {
     const submitSearch = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
-        const result = axios.post("/search", { "searchString": searchString })
+        const result = await axios.post("http://127.0.0.1:3000/search", { "searchString": searchString })
         .then((result) => {
             return result.data
         })
         .catch(err => {
             console.log(err)
         })
-        
-        navigate("/search-result", {
-            state: result
-        })
+        console.log(result)
+        // navigate("/search-result", {
+        //     state: result
+        // })
     }
 
     return (<>
