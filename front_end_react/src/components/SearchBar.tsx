@@ -20,10 +20,11 @@ export const SearchBar = () => {
         .catch(err => {
             console.log(err)
         })
+
         console.log(result)
-        // navigate("/search-result", {
-        //     state: result
-        // })
+        navigate("/search-result", {
+            state: result
+        })
     }
 
     return (<>

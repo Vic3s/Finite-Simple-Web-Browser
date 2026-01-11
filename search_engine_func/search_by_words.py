@@ -63,7 +63,7 @@ def get_wordlist(wordslist: list):
 
     return filtered_wordslist
 
-def search(wordlist: list):
+def search_(wordlist: list):
     all_word_pages = set()
     pages_rank_values = {}
 
@@ -83,8 +83,6 @@ def search(wordlist: list):
     for page in all_word_pages:
         pages_rank_values[page] = page_rank_vector[page]
 
-    # pages_rank_values = dict()
-    
     # align by rank
     ranked_pages = dict(sorted(pages_rank_values.items(), key=lambda item: item[1], reverse=True)[:10])
 
