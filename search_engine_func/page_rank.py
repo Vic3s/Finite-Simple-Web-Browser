@@ -1,5 +1,5 @@
 
-def pagerank(graph, damping_factor=0.85, max_iterations=100):
+def page_rank(graph, damping_factor=0.85, max_iterations=100):
     # Get all urls in a set
     page_nodes = set(graph.keys())
 

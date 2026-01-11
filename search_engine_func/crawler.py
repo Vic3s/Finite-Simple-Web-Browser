@@ -54,7 +54,7 @@ def crawler_bot(starter_url: str):
             # add to outlinks
             outlinks_formated.append(url)
 
-            # Check if url has not been visited before
+            # check if url has not been visited before
             if url not in visited_urls:
                 urls.append(url)
                 visited_urls.add(url)

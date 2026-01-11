@@ -1,6 +1,8 @@
 import re
+from database_helper import get_single_inverted_index, get_all_page_outlinks, get_single_page
+from search_engine_func.page_rank import page_rank
 
-def search_wordlist(wordslist: list):
+def get_wordlist(wordslist: list):
     filtered_wordslist = []
 
     STOP_WORDS = [
@@ -58,6 +60,43 @@ def search_wordlist(wordslist: list):
             continue
 
         filtered_wordslist.append(cleaned)
+
+    return filtered_wordslist
+
+def search(wordlist: list):
+    all_word_pages = set()
+    pages_rank_values = {}
+
+    # find the inverted_indexes to get the links by the search words 
+    for word in wordlist:
+        all_word_pages.update(get_single_inverted_index(word)["word_pages"])
+
+    # get the page_rank values for the links
+
+    graph = {}
+
+    for page in get_all_page_outlinks():
+        graph[page["url"]] = page.get("outlinks", [])
+
+    page_rank_vector = page_rank(graph)
+    
+    for page in all_word_pages:
+        pages_rank_values[page] = page_rank_vector[page]
+
+    # pages_rank_values = dict()
+    
+    # align by rank
+    ranked_pages = dict(sorted(pages_rank_values.items(), key=lambda item: item[1], reverse=True)[:10])
+
+    # get the page from database
+    page_objects_list = []
+
+    for ranked_page in ranked_pages:
+        page_objects_list.append(get_single_page(ranked_page))
+
+    # return a list of the final page objects back to frontend
+    return page_objects_list
+
 
     
     

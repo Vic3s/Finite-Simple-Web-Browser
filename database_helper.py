@@ -9,18 +9,21 @@ load_dotenv()
 cluster = MongoClient(os.getenv("DB_STRING"))
 
 db = cluster["search_index"]
-collection_page = db["page_info"]
+collection_pages = db["page_info"]
 collection_outlinks = db["page_outlinks"]
 collection_inverted_indexes = db["inverted_indexes"]
 
 def insert_singel_page(page: dict):
-    collection_page.insert_one(page)
+    collection_pages.insert_one(page)
 
 def get_all_pages():
-    all_pages = collection_page.find()
+    all_pages = collection_pages.find()
     all_pages_list = [page for page in all_pages]
 
     return all_pages_list
+
+def get_single_page(url):
+    return collection_pages.find_one({"url": url})
 
 def insert_singel_page_outlinks(page_outlinks_obj: dict):
     collection_outlinks.insert_one(page_outlinks_obj)
@@ -44,8 +47,11 @@ def get_all_inverted_indexes():
 
 #     collection_inverted_indexes.update_one(filter_query, update_values)
 
+def get_single_inverted_index(word: str):
+    return collection_inverted_indexes.find_one({"word": word})
+
 def bulk_write_inverted_indexes(operations: list):
     if operations:
-        for batch in chunk(operations, 500):
+        for batch in chunk(operations, 700):
             collection_inverted_indexes.bulk_write(batch)
 

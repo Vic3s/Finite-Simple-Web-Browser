@@ -20,13 +20,14 @@ def index(webpage, webpage_url):
     words = re.findall(r"\b\w+\b", webpage.get_text(separator=" ", strip=True).lower())
 
     # double check and filter out any numbers and charachters and remove duplicate 
-    words = (word for word in words if word.isalpha())
+    words = [word for word in words if word.isalpha()]
+    unique_words = set(words)
 
     # save inverted indexes for page content
     all_existing_words_list = get_all_inverted_indexes().keys()
     operations = []
 
-    for word in words:
+    for word in unique_words:
         if word in all_existing_words_list:
             operations.append(
                 UpdateOne(
