@@ -69,7 +69,10 @@ def search_(wordlist: list):
 
     # find the inverted_indexes to get the links by the search words 
     for word in wordlist:
-        all_word_pages.update(get_single_inverted_index(word)["word_pages"])
+        try:
+            all_word_pages.update(get_single_inverted_index(word)["word_pages"])
+        except:
+            return {"message": "No inofrmation about this topic :("}
 
     # get the page_rank values for the links
 

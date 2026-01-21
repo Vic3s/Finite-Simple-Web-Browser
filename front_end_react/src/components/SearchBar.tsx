@@ -15,16 +15,18 @@ export const SearchBar = () => {
 
         const result = await axios.post("http://127.0.0.1:3000/search", { "searchString": searchString })
         .then((result) => {
-            return result.data
+            if (typeof result.data === "object" && result.data !== null && !Array.isArray(result.data)) {
+                console.log(result.data)
+                navigate("/search-no-information", {state: result.data})
+                return 
+            }
+            navigate("/search-result", { state: result.data })
+            return 
         })
         .catch(err => {
             console.log(err)
         })
-
-        console.log(result)
-        navigate("/search-result", {
-            state: result
-        })
+        
     }
 
     return (<>

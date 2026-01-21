@@ -3,3 +3,8 @@ export interface SearchResultType {
     title: string
     description: string
 }
+
+
+export interface NoIngormationMessage {
+    message: string
+}

@@ -9,12 +9,12 @@ def index(webpage, webpage_url):
 
     # get the desctiption
     description = ""
-    meta_desctipntion = webpage.find("meta", attrs={"name": description})
+    meta_desctipntion = webpage.find("meta", attrs={"name": "description"})
     if meta_desctipntion and "content" in meta_desctipntion.attrs:
         description = meta_desctipntion["content"]
     else:
         text_content = webpage.get_text(separator=" ", strip=True)
-        description = text_content[200] + "..." if len(text_content) > 200 else text_content
+        description = text_content[:200] + "..." if len(text_content) > 200 else text_content
 
     # get the word content of the page
     words = re.findall(r"\b\w+\b", webpage.get_text(separator=" ", strip=True).lower())

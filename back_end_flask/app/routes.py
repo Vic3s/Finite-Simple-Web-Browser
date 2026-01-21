@@ -12,9 +12,5 @@ def search():
 
     results_object_list = json_util.dumps(search_(get_wordlist(wordslist)))
 
-    # for result_object in results_object_list:
-    #     result_object.pop("_id")
-
-
     return Response(results_object_list, mimetype="application/json")
 
